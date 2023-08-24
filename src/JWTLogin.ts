@@ -1,19 +1,15 @@
 import express = require("express");
-import jwt = require("jsonwebtoken");
-import fs = require("fs");
-const server = express();
-server.use(express.json());
-server.use(express.urlencoded({ extended: false }));
+import jwttoken = require("jsonwebtoken");
+import { privatekey } from "./Server";
+const jwt = express.Router();
 
-const privatekey = JSON.parse(fs.readFileSync("PrivateKey.json", "utf-8"));
-
-server.get("/login/jwt", (req, res) => {
+jwt.get("/jwt", (req, res) => {
     const key = privatekey.jwt_secret_key;
 
     const id = "seoksee";
     const passwd = "seoksee";
 
-    const token = jwt.sign({
+    const token = jwttoken.sign({
         id: id,
         passwd: passwd
     }, 
@@ -26,6 +22,4 @@ server.get("/login/jwt", (req, res) => {
     res.json(token);
 });
 
-server.listen(80, () => {
-    console.log(`서버가 80 포트로 열림`);
-});
+export default jwt

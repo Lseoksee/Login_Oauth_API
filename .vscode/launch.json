@@ -4,11 +4,20 @@
     // 자세한 내용을 보려면 https://go.microsoft.com/fwlink/?linkid=830387을(를) 방문하세요.
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Node.js 로 실행",
-            "program": "${workspaceFolder}/bin/${fileBasenameNoExtension}",
             "request": "launch",
+            "runtimeArgs": ["start"],
+            "runtimeExecutable": "npm",
             "type": "node"
+        },
+        {
+            "name": "Chrome 으로 실행",
+            "request": "launch",
+            "type": "chrome",
+            "url": "${file}",
+            "webRoot": "${workspaceFolder}"
         },
         {
             "name": "ts-node 로 실행",

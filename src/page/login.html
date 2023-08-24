@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="login.css">
+    <title>로그인</title>
+</head>
+
+<body>
+    <div>
+        <form method="get" action="/login/jwt">
+            <input type="text" id="id"> 아이디 <br>
+            <input type="password" id="passwd"> 비번 <br>
+            <div style="text-align: center; margin-top: 5px;">
+                <input type="submit" id="add" value="완료">
+        </form>
+        <form action="/login/naver" method="get">
+            <input type="submit" value="네이버 로그인">
+        </form>
+        <form action="/login/google" method="get">
+            <input type="submit" value="구글 로그인">
+        </form>
+    </div>
+    </div>
+</body>
+
+</html>
