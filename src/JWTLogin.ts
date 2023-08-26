@@ -3,23 +3,33 @@ import jwttoken = require("jsonwebtoken");
 import { privatekey } from "./Server";
 const jwt = express.Router();
 
-jwt.get("/jwt", (req, res) => {
+type body = {
+    id: string;
+    passwd: string;
+};
+jwt.post("/jwt", (req, res) => {
+    const body: body = req.body;
+    console.log(body);
+
     const key = privatekey.jwt_secret_key;
 
-    const id = "seoksee";
-    const passwd = "seoksee";
+    const id = body.id;
 
-    const token = jwttoken.sign({
-        id: id,
-        passwd: passwd
-    }, 
-    key,
-    {
-        expiresIn: "1h",
-        issuer: "server"
+    const token = jwttoken.sign(
+        {
+            id: id
+        },
+        key,
+        {
+            expiresIn: "1h",
+            issuer: "server",
+        }
+    );
+
+    res.json({
+        type: "jwt",
+        token: token,
     });
-
-    res.json(token);
 });
 
-export default jwt
+export default jwt;

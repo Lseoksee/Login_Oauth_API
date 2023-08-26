@@ -1,10 +1,11 @@
 /* 구글 아이디 회원가입 구현 */
 import express = require("express");
+import url = require("url");
 import { privatekey } from "./Server";
 const google = express.Router();
 
-const loginpage = "https://accounts.google.com/o/oauth2/v2/auth";   //로그인 페이지
-const redirect = "http://korseok.kro.kr/login/resgoogle";   //리다이렉트 주소
+const loginpage = "https://accounts.google.com/o/oauth2/v2/auth"; //로그인 페이지
+const redirect = "http://korseok.kro.kr/login/resgoogle"; //리다이렉트 주소
 const access_token_url = "https://oauth2.googleapis.com/token"; //access_token 얻는 주소
 const getuser_url = "https://www.googleapis.com/oauth2/v2/userinfo"; //access_token 으로 정보 얻는 주소
 
@@ -14,7 +15,18 @@ google.get("/google", (req, res) => {
     res.redirect(url);
 });
 
-// 계정 선택후 해당 url로 redirect (수정은 구글 클라우드 에서)
+
+// 구글 응답 타입
+type resgoogle = {
+    email: string
+    family_name: string;
+    given_name: string;
+    id: string;
+    locale: string; //프사 경로
+    name: string;
+    picture: string;
+}
+// 계정 선택후 해당 url로 redirect (수정은 구글 클라우드에서)
 google.get("/resgoogle", async (req, res) => {
     const parm = req.query;
 
@@ -46,10 +58,17 @@ google.get("/resgoogle", async (req, res) => {
             Authorization: `Bearer ${restoken.access_token}`,
         },
     });
-    const resid = await (await getid).json();
+    const resid: resgoogle = await (await getid).json();
 
     console.log(resid);
-    res.send(resid);
+
+    //유저 정보를 쿼리에 실어 /home 으로
+    res.redirect(
+        url.format({
+            pathname: "/home",
+            query: { type: "google", ...resid },
+        })
+    );
 });
 
 export default google;

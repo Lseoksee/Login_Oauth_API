@@ -1,5 +1,6 @@
 /* 네이버 아이디 회원가입 구현 */
 import express = require("express");
+import url = require("url");
 import { privatekey } from "./Server";
 const naver = express.Router();
 
@@ -17,7 +18,21 @@ naver.get("/naver", (req, res) => {
     res.redirect(url);
 });
 
-// 계정 선택후 해당 url로 redirect (수정은 구글 클라우드 에서)
+// 네이버 응답 타입
+type resnaver = {
+    message: string;    // success
+    response: {
+        birthyear: string;
+        email: string;
+        gender: string; // M, G
+        id: string;
+        mobile: string;
+        mobile_e164: string;
+        name: string;
+    };
+    resultcode: string;
+};
+// 계정 선택후 해당 url로 redirect (수정은 네이버 클라우드에서)
 naver.get("/resnaver", async (req, res) => {
     const access_url = `${access_token_url}?grant_type=authorization_code&response_type=code&client_id=${privatekey.naver_client_id}&client_secret=${privatekey.naver_client_secret}&redirect_uri=${redirect}&code=${req.query.code}&state=${state}`;
 
@@ -40,10 +55,16 @@ naver.get("/resnaver", async (req, res) => {
         },
     });
 
-    const resid = await (await getid).json();
+    const resid: resnaver = await (await getid).json();
 
     console.log(resid);
-    res.send(resid);
+
+    res.redirect(
+        url.format({
+            pathname: "/home",
+            query: { type: "naver", ...resid.response },
+        })
+    );
 });
 
 export default naver;
