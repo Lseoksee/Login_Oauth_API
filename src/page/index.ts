@@ -7,7 +7,7 @@ type login = {
 const login: login = JSON.parse(localStorage?.getItem("login") as string);
 
 // 브라우저에서 로그인이 된 상태가 아닌경우
-if (!localStorage.getItem("login")) {
+if (!login) {
     window.location.href = "/login";
 }
 

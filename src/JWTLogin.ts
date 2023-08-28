@@ -82,8 +82,8 @@ jwt.post("/refreshjwt", (req, res) => {
     console.log("갱신 전 토큰: "+ body.access_token);
     
     //access_token 디코딩
-    const userdata: resjwt  = jwttoken.decode(body.access_token) as resjwt;
-
+    const userdata = jwttoken.decode(body.access_token) as resjwt;
+    
     //access_token 토큰이 맞는토큰인지 확인
     if (!userdata) {
         res.status(500).json({
@@ -94,7 +94,7 @@ jwt.post("/refreshjwt", (req, res) => {
         // refresh_token 유효성 확인
         jwttoken.verify(body.refresh_token, privatekey.jwt_secret_key);
 
-        const id = userdata;
+        const id = userdata.id;
         const key = privatekey.jwt_secret_key;
 
         // access_token 재발급
