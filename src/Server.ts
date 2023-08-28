@@ -10,13 +10,13 @@ type privatejson = typeof privatejson;
 
 // 로컬스토리지 로그인 타입
 export type login = {
-    type: string
-    access_token: string
-    refresh_token: string | undefined //jwt 로그인시
-}
+    type: string;
+    access_token: string;
+    refresh_token: string | undefined; //jwt 로그인시
+};
 
 server.get("/", (req, res) => {
-    res.sendFile(__dirname + "\\page\\index.html");
+    res.redirect("/home");
 });
 
 server.use(express.json());
