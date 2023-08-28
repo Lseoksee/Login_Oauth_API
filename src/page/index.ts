@@ -79,14 +79,25 @@ if (login.type === "jwt") {
             return;
         }
 
-        const div = document.getElementById("maindiv");
-        const text = document.createElement("h1");
-        const expired_time = document.createElement("p");
-        div?.appendChild(text);
-        div?.appendChild(expired_time);
+        // 화면 닉네임 표시
+        const text = document.getElementById("name");
+        const expired_time = document.getElementById("ann");
 
-        text.innerHTML = `${userdata.id}님 환영합니다`;
-        expired_time.innerHTML = `access_token 만료까지 남은시간 ${userdata.exp - Math.floor(Date.now()/1000)}`;
+        if (text && expired_time) {
+            text.innerHTML = `${userdata.id}님 환영합니다`;
+            expired_time.innerHTML = `access_token 만료까지 남은시간 ${
+                userdata.exp - Math.floor(Date.now() / 1000)
+            }`;
+        }
     };
+
     res();
 }
+
+//로그아웃 버튼
+const logout = document.getElementById("logout") as HTMLButtonElement;
+logout.addEventListener("click", (e) => {
+    e.preventDefault();
+    localStorage.removeItem("login");
+    window.location.href = "/login";
+});
