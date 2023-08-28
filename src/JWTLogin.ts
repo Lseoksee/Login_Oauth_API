@@ -6,7 +6,6 @@ const jwt = express.Router();
 // 로그인시 토큰 발급 타입
 type loginbody = {
     id: string;
-    passwd: string;
 };
 
 // jwt 디코딩 타입
@@ -63,10 +62,10 @@ jwt.post("/loginjwt", (req, res) => {
 
 //토큰 검증
 jwt.post("/verifyjwt", (req, res) => {
-    const token: string = req.body.token;
+    const access_token: string = req.body.access_token;
 
     try {
-        const userdata = jwttoken.verify(token, privatekey.jwt_secret_key);
+        const userdata = jwttoken.verify(access_token, privatekey.jwt_secret_key);
         console.log(userdata);
         res.send(userdata);
     } catch (err: any) {

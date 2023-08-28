@@ -13,14 +13,14 @@ if (!login) {
 
 //jwt
 if (login.type === "jwt") {
-    const res = async () => {
+    const jwt = async () => {
         const reqverify = await fetch("/login/verifyjwt", {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                token: login.access_token,
+                access_token: login.access_token,
             }),
         });
 
@@ -90,8 +90,80 @@ if (login.type === "jwt") {
             }`;
         }
     };
+    jwt();
+}
+if (login.type === "google") {
+    const getuser_url = "https://www.googleapis.com/oauth2/v2/userinfo"; //access_token 으로 유저 정보 얻는 주소
 
-    res();
+    const google = async () => {
+        // 토큰 유효성 검사 & 유저 정보 가져오기
+        const user = await fetch(getuser_url, {
+            method: "get",
+            headers: {
+                Authorization: `Bearer ${login.access_token}`,
+            },
+        });
+
+        // 구글 유저정보 응답 타입
+        type googleuser = {
+            email: string;
+            family_name: string;
+            given_name: string;
+            id: string;
+            locale: string; //프사 경로
+            name: string;
+            picture: string;
+        };
+        const userdata: googleuser = await user.json();
+        console.log(userdata);
+
+        // 화면 닉네임 표시
+        const text = document.getElementById("name");
+        const expired_time = document.getElementById("ann");
+
+        if (text && expired_time) {
+            text.innerHTML = `${userdata.family_name}${userdata.given_name}님 환영합니다`;
+            expired_time.innerHTML = `${userdata.email}`;
+        }
+    };
+    google();
+}
+if (login.type === "naver") {
+    const naver = async () => {
+        // 토큰 유효성 검사 & 유저 정보 가져오기
+        const user = await fetch("login/naververify", {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                access_token: login.access_token,
+            }),
+        });
+
+        // 네이버 유저정보 응답 타입
+        type naveruser = {
+            birthyear: string;
+            email: string;
+            gender: string; // M, G
+            id: string;
+            mobile: string;
+            mobile_e164: string;
+            name: string;
+        };
+        const userdata: naveruser = await user.json();
+        console.log(userdata);
+
+        // 화면 닉네임 표시
+        const text = document.getElementById("name");
+        const expired_time = document.getElementById("ann");
+
+        if (text && expired_time) {
+            text.innerHTML = `${userdata.name}님 환영합니다`;
+            expired_time.innerHTML = `${userdata.email}`;
+        }
+    };
+    naver();
 }
 
 //로그아웃 버튼
