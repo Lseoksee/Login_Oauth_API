@@ -92,6 +92,7 @@ if (login.type === "jwt") {
     };
     jwt();
 }
+
 if (login.type === "google") {
     const getuser_url = "https://www.googleapis.com/oauth2/v2/userinfo"; //access_token 으로 유저 정보 얻는 주소
 
@@ -128,6 +129,7 @@ if (login.type === "google") {
     };
     google();
 }
+
 if (login.type === "naver") {
     const naver = async () => {
         // 토큰 유효성 검사 & 유저 정보 가져오기

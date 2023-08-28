@@ -1,6 +1,5 @@
 /* 네이버 아이디 회원가입 구현 */
 import express = require("express");
-import url = require("url");
 import { privatekey } from "./Server";
 const naver = express.Router();
 
@@ -16,7 +15,7 @@ type access_token = {
     expires_in: string;
     refresh_token: string;
     token_type: string;
-}
+};
 
 // 네이버 응답 타입
 type resnaver = {
@@ -46,12 +45,15 @@ naver.get("/naverpage", (req, res) => {
 });
 
 naver.post("/navergettoken", async (req, res) => {
-
     //클라이언트에서 url 파라미터를 가져와서 URLSearchParams로 가져오기
     const resparams = req.body.url;
     const parmsMap = new URLSearchParams(resparams);
 
-    const access_url = `${access_token_url}?grant_type=authorization_code&response_type=code&client_id=${privatekey.naver_client_id}&client_secret=${privatekey.naver_client_secret}&redirect_uri=${redirect}&code=${parmsMap.get("code")}&state=${state}`;
+    const access_url = `${access_token_url}?grant_type=authorization_code&response_type=code&client_id=${
+        privatekey.naver_client_id
+    }&client_secret=${
+        privatekey.naver_client_secret
+    }&redirect_uri=${redirect}&code=${parmsMap.get("code")}&state=${state}`;
 
     // access_token url
     const access_token = await fetch(access_url, {
@@ -72,9 +74,9 @@ naver.post("/navergettoken", async (req, res) => {
 });
 
 // 토큰 유효성 검사 & 유저 정보 가져오기
-naver.post("/naververify",  async (req, res) => {
+naver.post("/naververify", async (req, res) => {
     // 네이버에 경우 프론트에서 요청하면 CORS 애러가 남으로 백엔드 서버에서 요청 해야함
-    const access_token = req.body.access_token;    
+    const access_token = req.body.access_token;
 
     const getid = await fetch(getuser_url, {
         method: "get",

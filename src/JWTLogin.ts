@@ -65,7 +65,10 @@ jwt.post("/verifyjwt", (req, res) => {
     const access_token: string = req.body.access_token;
 
     try {
-        const userdata = jwttoken.verify(access_token, privatekey.jwt_secret_key);
+        const userdata = jwttoken.verify(
+            access_token,
+            privatekey.jwt_secret_key
+        );
         console.log(userdata);
         res.send(userdata);
     } catch (err: any) {
@@ -78,11 +81,11 @@ jwt.post("/verifyjwt", (req, res) => {
 // 토큰 재발급
 jwt.post("/refreshjwt", (req, res) => {
     const body: refreshbody = req.body;
-    console.log("갱신 전 토큰: "+ body.access_token);
-    
+    console.log("갱신 전 토큰: " + body.access_token);
+
     //access_token 디코딩
     const userdata = jwttoken.decode(body.access_token) as resjwt;
-    
+
     //access_token 토큰이 맞는토큰인지 확인
     if (!userdata) {
         res.status(500).json({
@@ -107,7 +110,7 @@ jwt.post("/refreshjwt", (req, res) => {
                 issuer: "server",
             }
         );
-        console.log("갱신 후 토큰: "+ access_token);
+        console.log("갱신 후 토큰: " + access_token);
 
         res.json({
             login: {

@@ -37,7 +37,7 @@ if (google) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                url: window.location.search
+                url: window.location.search,
             }),
         });
 
@@ -59,13 +59,13 @@ if (naver) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                url: window.location.search
+                url: window.location.search,
             }),
         });
 
         const navertoken = await token.json();
         console.log(navertoken);
-        
+
         localStorage.setItem("login", JSON.stringify(navertoken));
         window.location.href = "/home";
     };

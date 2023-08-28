@@ -1,6 +1,5 @@
 /* 구글 아이디 회원가입 구현 */
 import express = require("express");
-import url = require("url");
 import { privatekey } from "./Server";
 const google = express.Router();
 
