@@ -8,8 +8,15 @@ const server = express();
 
 type privatejson = typeof privatejson;
 
+// 로컬스토리지 로그인 타입
+export type login = {
+    type: string
+    access_token: string
+    refresh_token: string | undefined //jwt 로그인시
+}
+
 server.get("/", (req, res) => {
-    res.redirect("/login");
+    res.sendFile(__dirname + "\\page\\index.html");
 });
 
 server.use(express.json());
@@ -25,15 +32,7 @@ const privatekey: privatejson = JSON.parse(
 );
 
 server.get("/home", (req, res) => {
-    const resdata = req.query;
-    
-    if (resdata.type == "google") {
-        console.log(`${resdata.family_name}${resdata.given_name} 님 환영합니다`);   
-    } else if (resdata.type == "naver") {
-        console.log(`${resdata.name} 님 환영합니다`);  
-    }
-
-    res.send("ok");
+    res.sendFile(__dirname + "\\page\\index.html");
 });
 
 server.get("/login", (req, res) => {

@@ -10,7 +10,7 @@
 
 <body>
     <div>
-        <form method="post" action="/login/jwt">
+        <form>
             <input type="text" id="id" name="id"> 아이디 <br>
             <input type="password" id="passwd" name="passwd"> 비번 <br>
             <div style="text-align: center; margin-top: 5px;">
@@ -24,6 +24,8 @@
         </form>
     </div>
     </div>
+    <!-- type export시 인식할수 없는 문제 해결 -->
+    <script type="module" src="login.js"></script>
 </body>
 
 </html>

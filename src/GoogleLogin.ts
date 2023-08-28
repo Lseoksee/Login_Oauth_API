@@ -42,23 +42,23 @@ google.get("/resgoogle", async (req, res) => {
     data.append("grant_type", "authorization_code");
 
     // access_token url
-    const access_token = fetch(access_token_url, {
+    const access_token = await fetch(access_token_url, {
         method: "post",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
         },
         body: data,
     });
-    const restoken = await (await access_token).json();
+    const restoken = await access_token.json();
 
     // access_token 으로 유저 정보 가져오기
-    const getid = fetch(getuser_url, {
+    const getid = await fetch(getuser_url, {
         method: "get",
         headers: {
             Authorization: `Bearer ${restoken.access_token}`,
         },
     });
-    const resid: resgoogle = await (await getid).json();
+    const resid: resgoogle = await getid.json();
 
     console.log(resid);
 

@@ -20,7 +20,7 @@ naver.get("/naver", (req, res) => {
 
 // 네이버 응답 타입
 type resnaver = {
-    message: string;    // success
+    message: string; // success
     response: {
         birthyear: string;
         email: string;
@@ -37,7 +37,7 @@ naver.get("/resnaver", async (req, res) => {
     const access_url = `${access_token_url}?grant_type=authorization_code&response_type=code&client_id=${privatekey.naver_client_id}&client_secret=${privatekey.naver_client_secret}&redirect_uri=${redirect}&code=${req.query.code}&state=${state}`;
 
     // access_token url
-    const access_token = fetch(access_url, {
+    const access_token = await fetch(access_url, {
         method: "post",
         headers: {
             "X-Naver-Client-Id": privatekey.naver_client_id,
@@ -45,17 +45,17 @@ naver.get("/resnaver", async (req, res) => {
         },
     });
 
-    const restoken = await (await access_token).json();
+    const restoken = await access_token.json();
 
     // access_token 으로 유저 정보 가져오기
-    const getid = fetch(getuser_url, {
+    const getid = await fetch(getuser_url, {
         method: "get",
         headers: {
             Authorization: `Bearer ${restoken.access_token}`,
         },
     });
 
-    const resid: resnaver = await (await getid).json();
+    const resid: resnaver = await getid.json();
 
     console.log(resid);
 
