@@ -2,7 +2,7 @@
 
 Node.js 구글, 네이버 & JWT 로그인 구현
 
-# 사용법
+## 사용법
 
 1. [Node.js를 설치합니다.](https://nodejs.org/ko/download)
 2. 해당 리포지토리를 복제합니다.

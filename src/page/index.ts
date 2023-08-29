@@ -33,7 +33,7 @@ if (login.type === "jwt") {
             iss: string;
         } & {
             //오류 응답 타입
-            err: string | undefined;
+            err: string;
         };
         let userdata: resjwt = await reqverify.json();
         console.log(userdata);
@@ -94,6 +94,7 @@ if (login.type === "jwt") {
     jwt();
 }
 
+// 구글
 if (login.type === "google") {
     const getuser_url = "https://www.googleapis.com/oauth2/v2/userinfo"; //access_token 으로 유저 정보 얻는 주소
 
@@ -108,12 +109,12 @@ if (login.type === "google") {
 
         // 구글 유저정보 응답 타입
         type googleuser = {
-            email: string;
-            family_name: string;
-            given_name: string;
+            email: string;  //이메일
+            family_name: string;    //성
+            given_name: string; //이름
             id: string;
             locale: string; //프사 경로
-            name: string;
+            name: string; 
             picture: string;
         };
         const userdata: googleuser = await user.json();
@@ -131,6 +132,7 @@ if (login.type === "google") {
     google();
 }
 
+// 네이버
 if (login.type === "naver") {
     const naver = async () => {
         // 토큰 유효성 검사 & 유저 정보 가져오기
