@@ -3,6 +3,7 @@ type login = {
     type: string;
     access_token: string;
     refresh_token: string | undefined; //jwt 로그인시
+    /* DB 가 없으므로 refresh_token도 localStorage 에 저장하지만 보안 이슈로 반드시 DB에 저장해야함  */
 };
 const login: login = JSON.parse(localStorage?.getItem("login") as string);
 
