@@ -1,9 +1,9 @@
 import express = require("express");
 import jwttoken = require("jsonwebtoken");
-import { login, privatekey } from "./Server";
+import { privatekey } from "./Server";
 const jwt = express.Router();
 
-// 로그인시 토큰 발급 타입
+// 로그인 토큰 발급 타입
 type loginbody = {
     id: string;
 };
@@ -22,14 +22,7 @@ type refreshbody = {
     refresh_token: string;
 };
 
-//리프레쉬 토큰 응답
-type resrefresh = {
-    login: login;
-    userdata: resjwt;
-} & {
-    err: "refresh_fail";
-};
-
+// jwt 최초 로그인
 jwt.post("/loginjwt", (req, res) => {
     const body: loginbody = req.body;
     console.log(body);
@@ -53,10 +46,14 @@ jwt.post("/loginjwt", (req, res) => {
         issuer: "server",
     });
 
+    const data = jwttoken.decode(access_token) as resjwt;
+
     res.json({
         type: "jwt",
         access_token: access_token,
         refresh_token: refresh_token,
+        expires_in: data.exp * 1000, // 토큰이 만료 되는 시간 (밀리초)
+        data: data,
     } as login);
 });
 
@@ -112,14 +109,15 @@ jwt.post("/refreshjwt", (req, res) => {
         );
         console.log("갱신 후 토큰: " + access_token);
 
+        const data = jwttoken.decode(access_token) as resjwt;
+
         res.json({
-            login: {
-                type: "jwt",
-                access_token: access_token,
-                refresh_token: body.refresh_token,
-            },
-            userdata: jwttoken.decode(access_token),
-        } as resrefresh);
+            type: "jwt",
+            access_token: access_token,
+            refresh_token: body.refresh_token,
+            expires_in: data.exp * 1000, // 토큰이 만료 되는 시간 (밀리초)
+            data: data,
+        } as login);
     } catch (err: any) {
         // refresh 토큰 만료시
         res.status(500).json({
