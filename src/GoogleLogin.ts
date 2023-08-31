@@ -4,7 +4,6 @@ import { privatekey } from "./Server";
 const google = express.Router();
 
 const loginpage = "https://accounts.google.com/o/oauth2/v2/auth"; //로그인 페이지
-const redirect = "http://korseok.kro.kr/login/googlepage"; //리다이렉트 주소
 const get_token_url = "https://oauth2.googleapis.com/token"; //access_token 발급 및 재발급 주소
 const getuser_url = "https://www.googleapis.com/oauth2/v2/userinfo"; //access_token 으로 유저 정보 얻는 주소
 
@@ -39,7 +38,7 @@ type googleuser = {
 
 google.get("/google", (req, res) => {
     // 로그인 페이지 url
-    const url = `${loginpage}?client_id=${privatekey.google_client_id}&redirect_uri=${redirect}&response_type=code&scope=email profile&access_type=offline&prompt=consent`;
+    const url = `${loginpage}?client_id=${privatekey.google_client_id}&redirect_uri=${privatekey.google_redirect_url}&response_type=code&scope=email profile&access_type=offline&prompt=consent`;
     // refresh_token 얻으려면 access_type=offline&prompt=consent 이렇게 설정
 
     res.redirect(url);
@@ -64,7 +63,7 @@ google.post("/googlegettoken", async (req, res) => {
     data.append("scope", parmsMap.get("scope") as string);
     data.append("client_id", privatekey.google_client_id);
     data.append("client_secret", privatekey.google_client_secret);
-    data.append("redirect_uri", redirect);
+    data.append("redirect_uri", privatekey.google_redirect_url);
     data.append("grant_type", "authorization_code");
 
     // token 얻는 요청

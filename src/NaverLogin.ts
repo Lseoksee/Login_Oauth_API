@@ -4,7 +4,6 @@ import { privatekey } from "./Server";
 const naver = express.Router();
 
 const loginpage = "https://nid.naver.com/oauth2.0/authorize"; //로그인 페이지
-const redirect = "http://korseok.kro.kr/login/naverpage"; //리다이렉트 주소
 const get_token_url = "https://nid.naver.com/oauth2.0/token"; //access_token 발급 및 재발급 주소
 const getuser_url = "https://openapi.naver.com/v1/nid/me"; //access_token 으로 정보 얻는 주소
 const state = Math.random().toString(16).substring(2); //랜덤 문자열
@@ -41,7 +40,7 @@ type naveruser = {
 
 naver.get("/naver", (req, res) => {
     // 로그인 페이지 url
-    const url = `${loginpage}?response_type=code&client_id=${privatekey.naver_client_id}&redirect_uri=${redirect}&state=${state}`;
+    const url = `${loginpage}?response_type=code&client_id=${privatekey.naver_client_id}&redirect_uri=${privatekey.naver_redirect_url}&state=${state}`;
 
     res.redirect(url);
 });
@@ -63,7 +62,7 @@ naver.post("/navergettoken", async (req, res) => {
     data.append("response_type", "code");
     data.append("client_id", privatekey.naver_client_id);
     data.append("client_secret", privatekey.naver_client_secret);
-    data.append("redirect_uri", redirect);
+    data.append("redirect_uri", privatekey.naver_redirect_url);
     data.append("code", parmsMap.get("code") as string);
     data.append("state", state);
 
