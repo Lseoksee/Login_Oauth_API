@@ -41,17 +41,6 @@ if (!login) {
 
 //jwt
 if (login.type === "jwt") {
-    // 화면 닉네임 표시 (응답 속도로 인해 미리 로드)
-    const text = document.getElementById("name");
-    const expired_time = document.getElementById("ann");
-
-    if (text && expired_time) {
-        text.innerHTML = `${login.data.id}님 환영합니다`;
-        expired_time.innerHTML = `access_token 만료까지 남은시간: ${Math.round(
-            (login.expires_in - Date.now()) / 1000
-        )}초`;
-    }
-
     const jwt = async () => {
         const reqverify = await fetch("/login/verifyjwt", {
             method: "post",
@@ -116,9 +105,13 @@ if (login.type === "jwt") {
         }
     };
     jwt().then(() => {
-        if (expired_time) {
-            // 만료시간을 즉각적으로 바꾸기 위한 코드
-            expired_time.innerHTML = `access_token 만료까지 남은시간: ${Math.round(
+        // 화면 닉네임 표시
+        const text = document.getElementById("name");
+        const expired_time = document.getElementById("ann");
+
+        if (expired_time && text) {
+            text.innerHTML = `${login.data.id}님 환영합니다`;
+            expired_time.innerHTML = `access_token 만료까지 남은시간: ${Math.floor(
                 (login.expires_in - Date.now()) / 1000
             )}초`;
         }
@@ -127,17 +120,6 @@ if (login.type === "jwt") {
 
 // 구글
 if (login.type === "google") {
-    // 화면 닉네임 표시 (응답 속도로 인해 미리 로드)
-    const text = document.getElementById("name");
-    const expired_time = document.getElementById("ann");
-
-    if (text && expired_time) {
-        text.innerHTML = `${login.data.family_name}${login.data.given_name}님 환영합니다`;
-        expired_time.innerHTML = `access_token 만료까지 남은시간: ${Math.round(
-            (login.expires_in - Date.now()) / 60000
-        )}분`;
-    }
-
     const google = async () => {
         // 토큰 유효성 검사 (토큰 만료는 1시간)
         const user = await fetch(
@@ -167,11 +149,10 @@ if (login.type === "google") {
             console.log(resrefresh);
 
             if (!reqrefresh.ok) {
-                return;
                 // refresh_token이 만료되거나 갱신 불가
-                // localStorage.removeItem("login");
-                // window.location.href = "/login";
-                // return;
+                localStorage.removeItem("login");
+                window.location.href = "/login";
+                return;
             }
 
             // 갱신한 토큰 localStorage 에 저장
@@ -182,9 +163,13 @@ if (login.type === "google") {
         }
     };
     google().then(() => {
-        if (expired_time) {
-            // 만료시간을 즉각적으로 바꾸기 위한 코드
-            expired_time.innerHTML = `access_token 만료까지 남은시간: ${Math.round(
+        // 화면 닉네임 표시
+        const text = document.getElementById("name");
+        const expired_time = document.getElementById("ann");
+
+        if (text && expired_time) {
+            text.innerHTML = `${login.data.family_name}${login.data.given_name}님 환영합니다`;
+            expired_time.innerHTML = `access_token 만료까지 남은시간: ${Math.floor(
                 (login.expires_in - Date.now()) / 60000
             )}분`;
         }
@@ -193,17 +178,6 @@ if (login.type === "google") {
 
 // 네이버
 if (login.type === "naver") {
-    // 화면 닉네임 표시 (응답 속도로 인해 미리 로드)
-    const text = document.getElementById("name");
-    const expired_time = document.getElementById("ann");
-
-    if (text && expired_time) {
-        text.innerHTML = `${login.data.name}님 환영합니다`;
-        expired_time.innerHTML = `access_token 만료까지 남은시간: ${Math.round(
-            (login.expires_in - Date.now()) / 60000
-        )}분`;
-    }
-
     const naver = async () => {
         // 토큰 유효성 검사 (토큰 만료는 1시간)
         const user = await fetch("login/naververify", {
@@ -233,11 +207,10 @@ if (login.type === "naver") {
             console.log(resrefresh);
 
             if (!reqrefresh.ok) {
-                return;
                 // refresh_token이 만료되거나 갱신 불가
-                // localStorage.removeItem("login");
-                // window.location.href = "/login";
-                // return;
+                localStorage.removeItem("login");
+                window.location.href = "/login";
+                return;
             }
 
             // 갱신한 토큰 localStorage 에 저장
@@ -248,9 +221,13 @@ if (login.type === "naver") {
         }
     };
     naver().then(() => {
-        if (expired_time) {
-            // 만료시간을 즉각적으로 바꾸기 위한 코드
-            expired_time.innerHTML = `access_token 만료까지 남은시간: ${Math.round(
+        // 화면 닉네임 표시
+        const text = document.getElementById("name");
+        const expired_time = document.getElementById("ann");
+
+        if (text && expired_time) {
+            text.innerHTML = `${login.data.name}님 환영합니다`;
+            expired_time.innerHTML = `access_token 만료까지 남은시간: ${Math.floor(
                 (login.expires_in - Date.now()) / 60000
             )}분`;
         }
