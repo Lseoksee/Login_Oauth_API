@@ -23,7 +23,6 @@ public class App  {
         b1.addActionListener((e) -> {
             try {
                 Desktop.getDesktop().browse(new URI("http://localhost/login/google"));
-
                 ServerSocket socket = new ServerSocket(25565);
                 
                 Socket sc = socket.accept();

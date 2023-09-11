@@ -1,7 +1,6 @@
 import express = require("express");
 import fs = require("fs");
 import privatejson from "../PrivateKey.json";
-import net = require("net");
 
 const server = express();
 type privatejson = typeof privatejson;
@@ -14,6 +13,7 @@ const privatekey: privatejson = JSON.parse(
     fs.readFileSync("PrivateKey.json", "utf-8")
 );
 
+server.use(express.static(__dirname + "\\index.html"));
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
@@ -27,15 +27,7 @@ server.get("/login/google", (req, res) => {
 
 // 계정 선택후 임시 페이지로 redirect (수정은 구글 클라우드로)
 server.get("/login/googlepage", (req, res) => {
-    const socket = new net.Socket();
-    socket.connect({ port: 25565, host: "localhost" }, () => {
-        console.log("연결완료");
-
-        socket.write(JSON.stringify(req.query));
-    });
-    socket.on("close", ()=> {
-        console.log("연결종료");
-    });
+    res.sendFile(__dirname+"\\index.html");
 });
 
 server.listen(80, () => {
