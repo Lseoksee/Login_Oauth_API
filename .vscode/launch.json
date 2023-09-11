@@ -4,7 +4,6 @@
     // 자세한 내용을 보려면 https://go.microsoft.com/fwlink/?linkid=830387을(를) 방문하세요.
     "version": "0.2.0",
     "configurations": [
-
         {
             "name": "Node.js 로 실행",
             "request": "launch",
@@ -25,6 +24,12 @@
             "runtimeExecutable": "npx",
             "args": ["ts-node", "${file}"],
             "type": "node"
+        },
+        {
+            "name": "java 로 실행",
+            "type": "java",
+            "request": "launch",
+            "mainClass": "${file}"
         }
     ]
 }
