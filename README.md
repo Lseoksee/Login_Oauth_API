@@ -1,6 +1,7 @@
 # Login_Oauth_API
 
-Node.js 구글, 네이버 & JWT 로그인 구현
+-   Node.js 구글, 네이버 & JWT 로그인 구현
+-   TCP 소켓을 사용하여 앱 (GUI 환경) 에서 웹 로그인 구현
 
 ## 사용법
 
@@ -24,4 +25,13 @@ Node.js 구글, 네이버 & JWT 로그인 구현
 
 4. 해당폴더에서 명령창를 열고 `npm install` 를 입력하여 패키지를 설치합니다.
 5. `npm run build` 를 입력하여 프로젝트를 빌드 합니다.
-6. `npm run start` 를 입력하여 서버를 시작합니다.
+
+### 웹 로그인
+
+1. `npm run start` 를 입력하여 서버를 시작합니다.
+2. 웹 브라우저에서 로컬 주소로 들어가 테스트 합니다
+
+### 앱 로그인
+
+1. `npx ts-node AppLogin/Login_Server.ts` 를 입력하여 로그인 서버를 엽니다.
+2. `App.java` 를 실행합니다
