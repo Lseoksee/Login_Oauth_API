@@ -57,7 +57,6 @@ public class App {
             if (socket != null && !socket.isClosed()) {
                 // 소켓이 종료 안된경우 종료 시킴
                 socket.close();
-                //TODO: 근데 다시 열수가 없음
             }
 
             Desktop.getDesktop().browse(new URI("http://localhost/login/google"));
@@ -66,6 +65,7 @@ public class App {
             // 만일 사용자가 로그인 하지 않고 페이지를 종료할경우 무한루프에 빠지므로 timeout 설정
 
             Socket sc = socket.accept();
+            // 소켓이 종료된경우 Socket closed 예외가 발생하여 자동 종료
 
             // 클라이언트가 응답이 종료될 수 있도록 데이터를 보내줘여함
             String messge = "클라이언트 연결";
