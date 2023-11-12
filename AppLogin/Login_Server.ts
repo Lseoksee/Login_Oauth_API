@@ -18,11 +18,11 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
 // 앱 쪽 소켓 통신을 위한 함수
-function connectSocket(data: string): void {
+function connectSocket(data: string, ip: string): void {
     const socket = new net.Socket();
 
     // 소켓 연결 후 데이터 보내기
-    socket.connect(25565, "localhost", () => {
+    socket.connect(25565, ip, () => {
         console.log("연결됨");
 
         socket.write(data, (err: Error | undefined) => {
@@ -52,6 +52,7 @@ function connectSocket(data: string): void {
 
 server.get("/login/google", (req, res) => {
     // 로그인 페이지 url
+    console.log(req.ip);
     const url = `${loginpage}?client_id=${privatekey.google_client_id}&redirect_uri=${privatekey.google_redirect_url}&response_type=code&scope=email profile&access_type=offline&prompt=consent`;
     // refresh_token 얻으려면 access_type=offline&prompt=consent 이렇게 설정
 
@@ -88,7 +89,7 @@ server.get("/login/googlepage", async (req, res) => {
     if (!get_token.ok) {
         console.log(restoken);
         res.status(500).send("구글 토큰 서버에서 오류가남");
-        connectSocket(JSON.stringify({ err: "google_token_err" }));
+        connectSocket(JSON.stringify({ err: "google_token_err" }), req.ip);
         return;
     }
 
@@ -106,15 +107,15 @@ server.get("/login/googlepage", async (req, res) => {
     // 요청 애러 발생시
     if (!user.ok) {
         res.status(500).send("구글에서 유저 정보를 가져오지 못함");
-        connectSocket(JSON.stringify({ err: "google_user_err" }));
+        connectSocket(JSON.stringify({ err: "google_user_err" }), req.ip);
         return;
     }
 
-    connectSocket(JSON.stringify(userdata));
+    connectSocket(JSON.stringify(userdata), req.ip);
     res.sendFile(__dirname + "\\index.html");
 });
 
-server.listen(80, () => {
+server.listen(80, "0.0.0.0", () => {
     console.log(`서버가 80 포트로 열림`);
 });
 
