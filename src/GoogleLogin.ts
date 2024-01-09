@@ -148,6 +148,8 @@ google.post("/refreshgoogle", async (req, res) => {
 
     // 유저 정보 가져오기
     const user = await fetch(getuser_url, {
+        /* getuser_url?Authorization=`Bearer ${restoken.access_token}`
+        이렇게도 가능 */
         method: "get",
         headers: {
             Authorization: `Bearer ${restoken.access_token}`,
